@@ -7,16 +7,10 @@ const twemoji = require('twemoji');
 const twOptions = { folder: 'svg', ext: '.svg' };
 const emojify = (text: string) => twemoji.parse(text, twOptions);
 
-const noto = readFileSync(`${__dirname}/../_fonts/NotoSansJP-Regular.otf`).toString('base64')
-
 function getCss(fontSize: string, background: string | undefined) {
     return `
-    @font-face {
-        font-family: 'Noto Sans Japanese';
-        font-style:  normal;
-        font-weight: normal;
-        src: url(data:font/otf;charset=utf-8;base64,${noto}) format('opentype');
-    }
+
+    @import url(https://fonts.googleapis.com/earlyaccess/notosansjp.css);
 
     body {
         ${background ? `
@@ -24,7 +18,7 @@ function getCss(fontSize: string, background: string | undefined) {
           background-size: 100%;
           background-repeat: no-repeat;
         ` : '' }
-        font-family: 'Noto Sans Japanese';
+        font-family: 'Noto Sans JP';
         display: flex;
         align-items: center;
         align-content: center;
@@ -46,7 +40,7 @@ function getCss(fontSize: string, background: string | undefined) {
     }
     
     .heading {
-        font-family: 'Noto Sans Japanese', sans-serif;
+        font-family: 'Noto Sans JP', sans-serif;
         font-size: ${sanitizeHtml(fontSize)};
         font-style: normal;
         color: #000000;

@@ -17,6 +17,7 @@ export async function getScreenshot(html: string, type: FileType, isDev: boolean
     const page = await getPage(isDev);
     await page.setViewport({ width: 1200, height: 556 });
     await page.setContent(html);
+    await page.waitForTimeout(500);
     const file = await page.screenshot({ type });
     return file;
 }
