@@ -11,12 +11,7 @@ const rglr = readFileSync(`${__dirname}/../_fonts/Inter-Regular.woff2`).toString
 const bold = readFileSync(`${__dirname}/../_fonts/Inter-Bold.woff2`).toString('base64');
 const mono = readFileSync(`${__dirname}/../_fonts/Vera-Mono.woff2`).toString('base64');
 
-function getCss(theme: string, fontSize: string, background: string | undefined) {
-    let foreground = 'black';
-
-    if (theme === 'dark') {
-        foreground = 'white';
-    }
+function getCss(fontSize: string, background: string | undefined) {
     return `
     @font-face {
         font-family: 'Inter';
@@ -37,7 +32,9 @@ function getCss(theme: string, fontSize: string, background: string | undefined)
         font-style: normal;
         font-weight: normal;
         src: url(data:font/woff2;charset=utf-8;base64,${mono})  format("woff2");
-      }
+    }
+
+    @import url(https://fonts.googleapis.com/earlyaccess/notosansjp.css);
 
     body {
         ${background ? `
@@ -45,36 +42,14 @@ function getCss(theme: string, fontSize: string, background: string | undefined)
           background-size: 100%;
           background-repeat: no-repeat;
         ` : '' }
-        text-align: center;
-    }
-
-    code {
-        color: #D400FF;
-        font-family: 'Vera';
-        white-space: pre-wrap;
-        letter-spacing: -5px;
-    }
-
-    code:before, code:after {
-        content: '\`';
-    }
-
-    .logo-wrapper {
+        font-family: 'Noto Sans JP';
         display: flex;
         align-items: center;
         align-content: center;
         justify-content: center;
         justify-items: center;
-    }
-
-    .logo {
-        margin: 0 75px;
-    }
-
-    .plus {
-        color: #BBB;
-        font-family: Times New Roman, Verdana;
-        font-size: 100px;
+        height: 556px;
+        width: 1200px;
     }
 
     .spacer {
@@ -89,31 +64,32 @@ function getCss(theme: string, fontSize: string, background: string | undefined)
     }
     
     .heading {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Noto Sans JP', sans-serif;
         font-size: ${sanitizeHtml(fontSize)};
         font-style: normal;
-        color: ${foreground};
+        color: #000000;
         line-height: 1.8;
+        padding: 5px 20px 5px 20px;
+        text-align: center;
+        overflow-wrap: break-word;
     }`;
 }
 
 export function getHtml(parsedReq: ParsedRequest) {
-    const { text, theme, md, fontSize, background } = parsedReq;
+    const { text, md, fontSize, background } = parsedReq;
     return `<!DOCTYPE html>
 <html>
     <meta charset="utf-8">
     <title>Generated Image</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        ${getCss(theme, fontSize, background)}
+        ${getCss(fontSize, background)}
     </style>
     <body>
-        <div>
-            <div class="spacer">
-            <div class="heading">${emojify(
-                md ? marked(text) : sanitizeHtml(text)
-            )}
-            </div>
+        <div class="heading">
+        ${emojify(
+            md ? marked(text) : sanitizeHtml(text)
+        )}
         </div>
     </body>
 </html>`;
