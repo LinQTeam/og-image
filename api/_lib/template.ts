@@ -6,18 +6,17 @@ import { ParsedRequest } from './types';
 const twemoji = require('twemoji');
 const twOptions = { folder: 'svg', ext: '.svg' };
 const emojify = (text: string) => twemoji.parse(text, twOptions);
+const bg = 'https://res.cloudinary.com/hnxnccwb5/image/upload/v1639542500/question_box_non_logo_rmrsla.png'
 
-function getCss(fontSize: string, background: string | undefined) {
+function getCss(fontSize: string) {
     return `
 
     @import url(https://fonts.googleapis.com/earlyaccess/notosansjp.css);
 
     body {
-        ${background ? `
-          background-image: url('${background}');
-          background-size: 100%;
-          background-repeat: no-repeat;
-        ` : '' }
+        background-image: url('${bg}');
+        background-size: 100%;
+        background-repeat: no-repeat;
         font-family: 'Noto Sans JP';
         display: flex;
         align-items: center;
@@ -52,20 +51,18 @@ function getCss(fontSize: string, background: string | undefined) {
 }
 
 export function getHtml(parsedReq: ParsedRequest) {
-    const { text, md, fontSize, background } = parsedReq;
+    const { text, fontSize } = parsedReq;
     return `<!DOCTYPE html>
 <html>
     <meta charset="utf-8">
     <title>Generated Image</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        ${getCss(fontSize, background)}
+        ${getCss(fontSize)}
     </style>
     <body>
         <div class="heading">
-        ${emojify(
-            md ? marked(text) : sanitizeHtml(text)
-        )}
+        ${emojify(marked(text))}
         </div>
     </body>
 </html>`;

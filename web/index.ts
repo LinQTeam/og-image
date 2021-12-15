@@ -127,11 +127,6 @@ const fontSizeOptions: DropdownOption[] = Array
     .filter(n => n > 0)
     .map(n => ({ text: n + 'px', value: n + 'px' }));
 
-const markdownOptions: DropdownOption[] = [
-    { text: 'Plain Text', value: '0' },
-    { text: 'Markdown', value: '1' },
-];
-
 interface AppState extends ParsedRequest {
     loading: boolean;
     showToast: boolean;
@@ -160,21 +155,16 @@ const App = (_: any, state: AppState, setState: SetState) => {
         fileType = 'png',
         fontSize = '100px',
         theme = 'light',
-        md = true,
         text = '**Hello** World',
         showToast = false,
         messageToast = '',
         loading = true,
         overrideUrl = null,
-        background = 'https://res.cloudinary.com/hnxnccwb5/image/upload/v1639542500/question_box_non_logo_rmrsla.png'
     } = state;
-    const mdValue = md ? '1' : '0';
     const url = new URL(window.location.origin);
     url.pathname = `${encodeURIComponent(text)}.${fileType}`;
     url.searchParams.append('theme', theme);
-    url.searchParams.append('md', mdValue);
     url.searchParams.append('fontSize', fontSize);
-    url.searchParams.append('background', background);
 
     return H('div',
         { className: 'split' },
@@ -208,29 +198,12 @@ const App = (_: any, state: AppState, setState: SetState) => {
                     })
                 }),
                 H(Field, {
-                    label: 'Text Type',
-                    input: H(Dropdown, {
-                        options: markdownOptions,
-                        value: mdValue,
-                        onchange: (val: string) => setLoadingState({ md: val === '1' })
-                    })
-                }),
-                H(Field, {
                     label: 'Text Input',
                     input: H(TextInput, {
                         value: text,
                         oninput: (val: string) => {
                             console.log('oninput ' + val);
                             setLoadingState({ text: val, overrideUrl: url });
-                        }
-                    })
-                }),
-                H(Field, {
-                    label: 'background Input',
-                    input: H(TextInput, {
-                        value: background,
-                        oninput: (val: string) => {
-                            setLoadingState({ background: val, overrideUrl: url });
                         }
                     })
                 })
