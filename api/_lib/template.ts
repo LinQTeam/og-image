@@ -15,7 +15,7 @@ function getCss(fontSize: string, background: string | undefined) {
         font-family: 'Noto Sans Japanese';
         font-style:  normal;
         font-weight: normal;
-        src: url(data:font/otf;charset=utf-8;base64,${noto}) format('otf');
+        src: url(data:font/otf;charset=utf-8;base64,${noto}) format('opentype');
     }
 
     body {
